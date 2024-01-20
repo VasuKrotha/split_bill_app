@@ -13,14 +13,14 @@ const initfriends = [
     name: "suresh",
     balance: 30,
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5LsscxPVXCEOObeT9yea2GJ3Qd742Rm9WWQ&usqp=CAU",
+      "https://i.pinimg.com/736x/83/60/f6/8360f6e8e6167d545b0c34de7490cc1e.jpg",
   },
   {
     id: 4,
     name: "ganesh",
     balance: 0,
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5LsscxPVXCEOObeT9yea2GJ3Qd742Rm9WWQ&usqp=CAU",
+      "https://i0.wp.com/amicuspartners.co.in/wp-content/uploads/2019/03/Profile-Pic-Headshot-1409996335-1553495595155.jpg?fit=816%2C745&ssl=1",
   },
 ];
 export const Friend = () => {
