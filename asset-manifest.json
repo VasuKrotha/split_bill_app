@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/split_bill_app/static/css/main.c6127609.css",
+    "main.js": "/split_bill_app/static/js/main.dfe06758.js",
+    "index.html": "/split_bill_app/index.html",
+    "main.c6127609.css.map": "/split_bill_app/static/css/main.c6127609.css.map",
+    "main.dfe06758.js.map": "/split_bill_app/static/js/main.dfe06758.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c6127609.css",
+    "static/js/main.dfe06758.js"
+  ]
+}
