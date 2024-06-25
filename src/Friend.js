@@ -6,21 +6,21 @@ const initfriends = [
     name: "ramesh",
     balance: -20,
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5LsscxPVXCEOObeT9yea2GJ3Qd742Rm9WWQ&usqp=CAU",
+      "https://static.vecteezy.com/system/resources/thumbnails/026/619/142/small/default-avatar-profile-icon-of-social-media-user-photo-image-vector.jpg",
   },
   {
     id: 2,
     name: "suresh",
     balance: 30,
     image:
-      "https://i.pinimg.com/736x/83/60/f6/8360f6e8e6167d545b0c34de7490cc1e.jpg",
+      "https://static.vecteezy.com/system/resources/thumbnails/026/619/142/small/default-avatar-profile-icon-of-social-media-user-photo-image-vector.jpg",
   },
   {
     id: 4,
     name: "ganesh",
     balance: 0,
     image:
-      "https://i0.wp.com/amicuspartners.co.in/wp-content/uploads/2019/03/Profile-Pic-Headshot-1409996335-1553495595155.jpg?fit=816%2C745&ssl=1",
+      "https://static.vecteezy.com/system/resources/thumbnails/026/619/142/small/default-avatar-profile-icon-of-social-media-user-photo-image-vector.jpg",
   },
 ];
 export const Friend = () => {
@@ -180,7 +180,7 @@ function Friends({ friend, onSelection, selectedFriend, onDelete }) {
               </p>
             )}
             {friend.balance === 0 && (
-              <p className="text-gray-500"> You owe {friend.name} even</p>
+              <p className="text-gray-500"> {friend.name} </p>
             )}
           </div>
         </div>
@@ -216,112 +216,149 @@ function Friends({ friend, onSelection, selectedFriend, onDelete }) {
   );
 }
 
-function FormAddFriend({ onAddFriend }) {
+const FormAddFriend = ({ onAddFriend }) => {
   const [useName, setName] = useState("");
-  const [Img, setImg] = useState(null);
-  //const [filename, setfilename] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [filePreview, setFilePreview] = useState(null);
+
+  // Function to handle file selection
   const onchange = (e) => {
     const file = e.target.files[0];
-    console.log(file);
-
-    setImg(URL.createObjectURL(file));
+    if (file) {
+      setSelectedFile(file);
+      setFilePreview(URL.createObjectURL(file));
+    }
   };
 
-  const handlesubmit = (e) => {
-    e.preventDefault();
-    const id = crypto.randomUUID();
-    if (!useName || !Img) return;
+  // Function to handle canceling the selected file
+  const handleCancel = () => {
+    setSelectedFile(null);
+    setFilePreview(null);
+  };
 
-    const newfriend = {
-      image: Img,
+  // Function to handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!useName || !selectedFile) return;
+
+    const id = crypto.randomUUID(); // Generate a unique ID (you can use your preferred method)
+
+    const newFriend = {
+      image: filePreview, // Use the preview URL to display the image
       id: id,
       name: useName,
       balance: 0,
     };
 
-    console.log(newfriend);
-    onAddFriend(newfriend);
+    console.log(newFriend);
+    onAddFriend(newFriend); // Call the parent component's function to add the new friend
     setName("");
-    setImg(null);
+    handleCancel(); // Clear the file input and preview
   };
+
   return (
     <div>
       <form
         className="bg-orange-200 mt-10 rounded-lg w-full py-4 px-5"
-        onSubmit={handlesubmit}
+        onSubmit={handleSubmit}
       >
-        <div className="flex flex-row justify-around">
-          <label className="block text-sm font-medium text-gray-700 m-2 mr-20 mt-3">
-            Image Url
-          </label>
-          <div className="relative">
-            <input
-              type="file"
-              name="Image"
-              //value={Img}
-              multiple
-              accept="image/*"
-              className="mt-2 p-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300 w-2/4 hidden"
-              onChange={onchange}
-              id="fileInput"
-            />
-
-            <label htmlFor="fileInput" className="cursor-pointer mt-1 mr-36">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-10 h-10"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
-                />
-              </svg>
-            </label>
-
-            <span id="fileName" className="ml-2"></span>
-          </div>
-
-          {/* <div>
-            <div className="w-1/2 bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
-              <div
-                className="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500 w-12"
-                // style="width: 45%"
-              ></div>
+        <div className="flex justify-around items-center">
+          <div className="flex flex-col justify-start space-y-10 items-center">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 ">
+                Friend Name
+              </label>
             </div>
-          </div> */}
-        </div>
-        {/* <div className="flex justify-around">
-          <div>{filename}</div>
-          <div>
-            <button onClick={() => setImg("")}>c</button>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 ">
+                Image Upload
+              </label>
+            </div>
           </div>
-        </div> */}
-        <div className="flex flex-row  justify-around">
-          <label className="block text-sm font-medium text-gray-700 m-2  mt-4">
-            Friend Name
-          </label>
-          <input
-            type="text"
-            className="m-2 p-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300 w-2/4"
-            name="friendname"
-            value={useName}
-            onChange={(e) => setName(e.target.value)}
-          />
+          <div className="flex flex-col justify-center space-y-5 items-center">
+            <div>
+              <input
+                type="text"
+                className=" p-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300 w-[90%]"
+                name="friendname"
+                value={useName}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className=" flex justify-center items-center h-10">
+              <div className="absolute flex justify-center items-center">
+                <label htmlFor="fileInput" className="cursor-pointer">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-10 h-10"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
+                    />
+                  </svg>
+                </label>
+              </div>
+              <div className="relative">
+                <input
+                  type="file"
+                  name="Image"
+                  accept="image/*"
+                  className="border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300 hidden"
+                  onChange={onchange}
+                  id="fileInput"
+                />
+              </div>
+            </div>
+          </div>
         </div>
-
-        <div className="flex justify-center  mt-5 ">
+        <div className="flex justify-around items-center mt-5">
+          <div className="pr-12">
+            {filePreview && (
+              <img
+                src={filePreview}
+                alt="Preview"
+                className="max-w-10 h-10 transition-opacity duration-500 ease-in-out opacity-100"
+              />
+            )}
+          </div>
+          <div className="pr-14">
+            {filePreview && (
+              <button
+                className=" bg-red-500 text-white rounded-lg h-8 mr-3"
+                onClick={handleCancel}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            )}
+          </div>
+        </div>
+        <div className="flex justify-center mt-5">
           <button
-            className="bg-orange-600 font-bold rounded-lg py-2 px-5 ml-32 hover:bg-orange-500"
+            className="bg-orange-600 font-bold rounded-lg py-2 px-5 hover:bg-orange-500"
             type="submit"
           >
             Add
@@ -330,7 +367,7 @@ function FormAddFriend({ onAddFriend }) {
       </form>
     </div>
   );
-}
+};
 
 function Formsplitbill({ selectedFriend, onSplitbill }) {
   const [bill, setBill] = useState("");
@@ -346,7 +383,7 @@ function Formsplitbill({ selectedFriend, onSplitbill }) {
 
   return (
     <form className="bg-orange-200 rounded-lg w-full " onSubmit={handlesubmit}>
-      <div className=" w-full py-5 px-10 ">
+      <div className=" w-full py-5 px-12 ">
         <div className="flex justify-center ">
           <h2 className="capitalize font-bold mt-5 mb-5 text-2xl">
             Split a bill with {selectedFriend.name}
